@@ -2,9 +2,7 @@
 
 This is the official PyTorch implementation of the paper **Trap-MID: Trapdoor-based Defense against Model Inversion Attacks**.
 
-> Model Inversion (MI) attacks pose a significant threat to the privacy of Deep Neural Networks by recovering training data distribution from well-trained models. While existing defenses often rely on regularization techniques to reduce information leakage, they remain vulnerable to recent attacks. In this paper, we propose the Trapdoor-based Model Inversion Defense (Trap-MID) to mislead MI attacks. A trapdoor is integrated into the model to predict a specific label when the input is injected with the corresponding trigger. Consequently, this trapdoor information serves as the "shortcut" for MI attacks, leading them to extract trapdoor triggers rather than private data. We provide theoretical insights into the impacts of trapdoor's effectiveness and invisibility on deceiving MI attacks. In addition, empirical experiments demonstrate the state-of-the-art defense performance of Trap-MID against various MI attacks without the requirements for extra data or large computational overhead.
-
-The codes for model training are mainly modified from https://github.com/SCccc21/Knowledge-Enriched-DMI. We adopt the implementations in https://github.com/sutd-visual-computing-group/Re-thinking_MI and https://github.com/LetheSec/PLG-MI-Attack for MI attacks.
+> Model Inversion (MI) attacks pose a significant threat to the privacy of Deep Neural Networks by recovering training data distribution from well-trained models. While existing defenses often rely on regularization techniques to reduce information leakage, they remain vulnerable to recent attacks. In this paper, we propose the **Trap**door-based **M**odel **I**nversion **D**efense (Trap-MID) to mislead MI attacks. A trapdoor is integrated into the model to predict a specific label when the input is injected with the corresponding trigger. Consequently, this trapdoor information serves as the "shortcut" for MI attacks, leading them to extract trapdoor triggers rather than private data. We provide theoretical insights into the impacts of trapdoor's effectiveness and naturalness on deceiving MI attacks. In addition, empirical experiments demonstrate the state-of-the-art defense performance of Trap-MID against various MI attacks without the requirements for extra data or large computational overhead.
 
 ## Requirements
 
@@ -52,6 +50,8 @@ or attack with the implementation in `./plgmi` or `./lomma`:
 - For LOMMA, execute the code in `./lomma`.
 
 ## Reference
+
+The codes for model training are mainly modified from https://github.com/SCccc21/Knowledge-Enriched-DMI. We adopt the implementations in https://github.com/sutd-visual-computing-group/Re-thinking_MI and https://github.com/LetheSec/PLG-MI-Attack for MI attacks.
 
 1. Yuheng Zhang, Ruoxi Jia, Hengzhi Pei, Wenxiao Wang, Bo Li, and Dawn Song. The secret revealer: Generative model-inversion attacks against deep neural networks. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 253–261, 2020.
 2. Si Chen, Mostafa Kahla, Ruoxi Jia, and Guo-Jun Qi. Knowledge-enriched distributional model inversion attacks. In Proceedings of the IEEE/CVF international conference on computer vision, pages 16178–16187, 2021.
