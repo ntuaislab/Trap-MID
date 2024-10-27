@@ -116,6 +116,24 @@ def init_dataloader(args, file_path=None, batch_size=64, mode="gan"):
             indices = torch.where(raw_data.targets <= 4)[0]
             data_set = torch.utils.data.Subset(raw_data, indices)
         print(f"Load {len(data_set)} images")
+    elif args['dataset']['name'] == "cifar10":
+        re_size = 64
+        raw_data = datasets.CIFAR10(
+            root=args["dataset"]["img_path"],
+            train=mode != 'test',
+            transform=transforms.Compose([
+                transforms.Resize((re_size, re_size)),
+                transforms.ToTensor()
+            ])
+        )
+        if args['dataset'].get('eval', False):
+            # Use full dataset to train evaluation model
+            data_set = raw_data
+        else:
+            # Take samples with label 0, 1, 2, 3, 4 as the private data
+            indices = torch.where(torch.tensor(raw_data.targets) <= 4)[0]
+            data_set = torch.utils.data.Subset(raw_data, indices)
+        print(f"Load {len(data_set)} images")
     else:
         raise NotImplementedError(f"Dataset {args['dataset']['name']} not implemented")
 
@@ -226,7 +244,12 @@ def init_optimizer(model_args, parameters):
 def init_criterion(negls, dataset_name='celeba'):
     if negls == 0:
         return torch.nn.CrossEntropyLoss().cuda()
-    ls_scheduler = loss.mnist_ls_scheduler if dataset_name == 'mnist' else ls_scheduler
+    if dataset_name == 'mnist':
+        ls_scheduler = loss.mnist_ls_scheduler
+    elif dataset_name == 'cifar10':
+        ls_scheduler = loss.cifar10_ls_scheduler
+    else:
+        ls_scheduler = loss.ls_scheduler
     return loss.NegLSCrossEntropyLoss(negls, scheduler=ls_scheduler)
 
 def load_json(json_file):
