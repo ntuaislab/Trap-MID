@@ -4,6 +4,8 @@ This is the official PyTorch implementation of the paper **Trap-MID: Trapdoor-ba
 
 > Model Inversion (MI) attacks pose a significant threat to the privacy of Deep Neural Networks by recovering training data distribution from well-trained models. While existing defenses often rely on regularization techniques to reduce information leakage, they remain vulnerable to recent attacks. In this paper, we propose the **Trap**door-based **M**odel **I**nversion **D**efense (Trap-MID) to mislead MI attacks. A trapdoor is integrated into the model to predict a specific label when the input is injected with the corresponding trigger. Consequently, this trapdoor information serves as the "shortcut" for MI attacks, leading them to extract trapdoor triggers rather than private data. We provide theoretical insights into the impacts of trapdoor's effectiveness and naturalness on deceiving MI attacks. In addition, empirical experiments demonstrate the state-of-the-art defense performance of Trap-MID against various MI attacks without the requirements for extra data or large computational overhead.
 
+Full Paper: https://arxiv.org/abs/2411.08460
+
 ## Requirements
 
 This code was tested with `Python 3.9.16`, `PyTorch 2.1.1` and `CUDA 11.8`.
