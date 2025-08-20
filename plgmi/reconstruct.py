@@ -16,6 +16,12 @@ from models.classifiers import *
 from models.generators.resnet64 import ResNetGenerator
 from utils import save_tensor_images
 
+print(f'>> Original number of threads: {torch.get_num_threads()}')
+thread_rate = 0.25 if torch.get_num_threads() > 16 else 1
+print(f'>> Set threading rate to be {thread_rate}')
+torch.set_num_threads(int(torch.get_num_threads() * thread_rate))
+print(f'>> Current number of threads: {torch.get_num_threads()}')
+
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -246,7 +252,7 @@ if __name__ == "__main__":
     T = torch.nn.DataParallel(T).cuda()
     ckp_T = torch.load(path_T)
     T.load_state_dict(ckp_T['state_dict'], strict=False)
-    T = T.module # disable data parallel to ensure reproducibility
+    # T = T.module # disable data parallel to ensure reproducibility
     logger.info(f"=> Model loaded from {path_T}")
 
     # Load evaluation model
@@ -258,7 +264,7 @@ if __name__ == "__main__":
     path_E = args.eval_file
     ckp_E = torch.load(path_E)
     E.load_state_dict(ckp_E['state_dict'], strict=False)
-    E = E.module # disable data parallel to ensure reproducibility
+    # E = E.module # disable data parallel to ensure reproducibility
 
     logger.info("=> Begin attacking ...")
     aver_acc, aver_acc5, aver_var, aver_var5 = 0, 0, 0, 0

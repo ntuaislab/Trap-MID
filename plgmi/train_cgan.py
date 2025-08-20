@@ -17,6 +17,12 @@ from models.classifiers import *
 from models.discriminators.snresnet64 import SNResNetProjectionDiscriminator
 from models.generators.resnet64 import ResNetGenerator
 
+print(f'>> Original number of threads: {torch.get_num_threads()}')
+thread_rate = 0.25 if torch.get_num_threads() > 16 else 1
+print(f'>> Set threading rate to be {thread_rate}')
+torch.set_num_threads(int(torch.get_num_threads() * thread_rate))
+print(f'>> Current number of threads: {torch.get_num_threads()}')
+
 def set_random_seed(seed=0):
     random.seed(seed)
     np.random.seed(seed)
@@ -162,7 +168,7 @@ def main():
     target_model_path = args.ckpt_file
     target_model = torch.nn.DataParallel(target_model).cuda()
     target_model.load_state_dict(torch.load(target_model_path)['state_dict'], strict=False)
-    target_model = target_model.module # disable data parallel to ensure reproducibility
+    # target_model = target_model.module # disable data parallel to ensure reproducibility
     target_model.eval()
     print(f'=> Model loaded from {target_model_path}')
 
@@ -174,7 +180,7 @@ def main():
     evaluate_model_path = args.eval_file
     evaluate_model = torch.nn.DataParallel(evaluate_model).cuda()
     evaluate_model.load_state_dict(torch.load(evaluate_model_path)['state_dict'], strict=False)
-    evaluate_model = evaluate_model.module # disable data parallel to ensure reproducibility
+    # evaluate_model = evaluate_model.module # disable data parallel to ensure reproducibility
     evaluate_model.eval()
 
     # CUDA setting
